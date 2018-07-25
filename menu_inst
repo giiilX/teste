@@ -640,7 +640,7 @@ nobind
 dev tun
 redirect-gateway def1 bypass-dhcp
 remote-random
-remote ${SERVER_IP} ${PORT} ${PROTOCOL}
+remote portalrecarga.vivo.com.br/recarga ${PORT} ${PROTOCOL}
 http-proxy ${SERVER_IP} ${PPROXY}
 $CIPHER
 comp-lzo yes
