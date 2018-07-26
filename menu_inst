@@ -583,15 +583,19 @@ float
 push "redirect-gateway def1 bypass-dhcp"
 ${dns[0]}
 ${dns[1]}
+
 user nobody
 group nogroup
+
 ${CIPHER}
 proto ${PROTOCOL}
 port $PORT
 dev tun
 status openvpn-status.log
 EOF
-PLUGIN=$(find / | grep openvpn-plugin-auth-pam.so | head -1) && [[ $(echo ${PLUGIN}) != "" ]] && {
+updatedb
+PLUGIN=$(locate openvpn-plugin-auth-pam.so | head -1)
+[[ ! -z $(echo ${PLUGIN}) ]] && {
 echo "client-to-client
 client-cert-not-required
 username-as-common-name
@@ -627,11 +631,16 @@ read -p " Confirme un Puerto(Proxy): " -e -i 80 PPROXY
 teste_porta $PPROXY
 done
 cat > /etc/openvpn/client-common.txt <<EOF
+# OVPN_ACCESS_SERVER_PROFILE=Adm-Ultimate
 client
 nobind
 dev tun
 redirect-gateway def1 bypass-dhcp
-remote ${SERVER_IP} ${PORT} ${PROTOCOL}
+remote-random
+remote portalrecarga.vivo.com.br/recarga ${PORT} ${PROTOCOL}
+navegue.vivo.com.br/controle ${PORT} ${PROTOCOL}
+navegue.vivo.com.br/pre ${PORT} ${PROTOCOL}
+d1n212ccp61dpw.cloudfront.net ${PORT} ${PROTOCOL}
 http-proxy ${SERVER_IP} ${PPROXY}
 $CIPHER
 comp-lzo yes
@@ -641,7 +650,8 @@ auth-user-pass
 EOF
 # Iptables
 if [[ ! -f /proc/user_beancounters ]]; then
-    N_INT=$(ip a |awk -v sip="$SERVER_IP" '$0 ~ sip { print $7}')
+    INTIP=$(ip a | awk -F"[ /]+" '/global/ && !/127.0/ {print $3; exit}')
+    N_INT=$(ip a |awk -v sip="$INTIP" '$0 ~ sip { print $7}')
     iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $N_INT -j MASQUERADE
 else
     iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -j SNAT --to-source $SERVER_IP
@@ -655,6 +665,42 @@ chmod +x /etc/network/if-up.d/iptables
 # Enable net.ipv4.ip_forward
 sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
 echo 1 > /proc/sys/net/ipv4/ip_forward
+# Regras de Firewall 
+if pgrep firewalld; then
+ if [[ "$PROTOCOL" = 'udp' ]]; then
+ firewall-cmd --zone=public --add-port=$PORT/udp
+ firewall-cmd --permanent --zone=public --add-port=$PORT/udp
+ elif [[ "$PROTOCOL" = 'tcp' ]]; then
+ firewall-cmd --zone=public --add-port=$PORT/tcp
+ firewall-cmd --permanent --zone=public --add-port=$PORT/tcp
+ fi
+firewall-cmd --zone=trusted --add-source=10.8.0.0/24
+firewall-cmd --permanent --zone=trusted --add-source=10.8.0.0/24
+fi
+if iptables -L -n | grep -qE 'REJECT|DROP'; then
+ if [[ "$PROTOCOL" = 'udp' ]]; then
+ iptables -I INPUT -p udp --dport $PORT -j ACCEPT
+ elif [[ "$PROTOCOL" = 'tcp' ]]; then
+ iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
+ fi
+iptables -I FORWARD -s 10.8.0.0/24 -j ACCEPT
+iptables -I FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables-save > $IPTABLES
+fi
+if hash sestatus 2>/dev/null; then
+ if sestatus | grep "Current mode" | grep -qs "enforcing"; then
+  if [[ "$PORT" != '1194' ]]; then
+   if ! hash semanage 2>/dev/null; then
+   yum install policycoreutils-python -y
+   fi
+   if [[ "$PROTOCOL" = 'udp' ]]; then
+   semanage port -a -t openvpn_port_t -p udp $PORT
+   elif [[ "$PROTOCOL" = 'tcp' ]]; then
+   semanage port -a -t openvpn_port_t -p tcp $PORT
+   fi
+  fi
+ fi
+fi
 #Liberando DNS
 DDNS=S
 agrega_dns () {
