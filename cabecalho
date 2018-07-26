@@ -481,6 +481,7 @@ $(cat /etc/openvpn/client-cert.pem)
 $(cat /etc/openvpn/ca.pem)
 </ca>" >> $HOME/$1.ovpn
 }
+
 open_1 () {
 CLIENT="$1"
 senha="$2"
