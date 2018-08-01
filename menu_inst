@@ -588,14 +588,16 @@ cat > /etc/openvpn/server.conf <<EOF
 server 10.8.0.0 255.255.255.0
 verb 3
 duplicate-cn
+sndbuf 0
+rcvbuf 0
 key client-key.pem
 ca ca.pem
 cert client-cert.pem
 dh dh.pem
-keepalive 10 120
+keepalive 10 20
 persist-key
 persist-tun
-comp-lzo
+comp-lzo yes
 float
 push "redirect-gateway def1 bypass-dhcp"
 ${dns[0]}
@@ -652,6 +654,10 @@ cat > /etc/openvpn/client-common.txt <<EOF
 # OVPN_ACCESS_SERVER_PROFILE=Adm-Ultimate-Pro
 client
 nobind
+persist-key
+persist-tun
+sndbuf 0
+rcvbuf 0
 dev tun
 redirect-gateway def1 bypass-dhcp
 remote-random
@@ -660,8 +666,11 @@ remote navegue.vivo.com.br/controle ${PORT} ${PROTOCOL}
 remote navegue.vivo.com.br/pre ${PORT} ${PROTOCOL}
 remote d1n212ccp61dpw.cloudfront.net ${PORT} ${PROTOCOL}
 http-proxy ${SERVER_IP} ${PPROXY}
+resolv-retry 5
 $CIPHER
 comp-lzo yes
+setenv opt block-outside-dns
+key-direction 1
 keepalive 10 20
 float
 auth-user-pass
