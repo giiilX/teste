@@ -462,16 +462,19 @@ add_repo () {
 if [[ "$VERSION_ID" = 'VERSION_ID="7"' ]]; then
 echo "deb http://build.openvpn.net/debian/openvpn/stable wheezy main" > /etc/apt/sources.list.d/openvpn.list
 wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add - > /dev/null 2>&1
-apt install locate
+apt install locate > /dev/null 2>&1
+apt install sysv-rc-conf > /dev/null 2>&1
 # Debian 8
 elif [[ "$VERSION_ID" = 'VERSION_ID="8"' ]]; then
 echo "deb http://build.openvpn.net/debian/openvpn/stable jessie main" > /etc/apt/sources.list.d/openvpn.list
 wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add - > /dev/null 2>&1
-apt install locate
+apt install locate > /dev/null 2>&1
+apt install sysv-rc-conf > /dev/null 2>&1
 # Ubuntu 14.04
 elif [[ "$VERSION_ID" = 'VERSION_ID="14.04"' ]]; then
 echo "deb http://build.openvpn.net/debian/openvpn/stable trusty main" > /etc/apt/sources.list.d/openvpn.list
 wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add - > /dev/null 2>&1
+apt install sysv-rc-conf > /dev/null 2>&1
 fi
 
 sed -i '3i\127.0.0.1 portalrecarga.vivo.com.br\' /etc/hosts
