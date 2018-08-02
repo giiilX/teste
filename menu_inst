@@ -597,7 +597,7 @@ dh dh.pem
 keepalive 10 20
 persist-key
 persist-tun
-comp-lzo yes
+comp-lzo
 float
 push "redirect-gateway def1 bypass-dhcp"
 ${dns[0]}
@@ -654,13 +654,12 @@ cat > /etc/openvpn/client-common.txt <<EOF
 # OVPN_ACCESS_SERVER_PROFILE=Adm-Ultimate-Pro
 client
 nobind
-persist-key
-persist-tun
 sndbuf 0
 rcvbuf 0
 dev tun
 redirect-gateway def1 bypass-dhcp
 remote-random
+remote portalrecarga.vivo.com.br/recarga/home ${PORT} ${PROTOCOL}
 remote portalrecarga.vivo.com.br/recarga ${PORT} ${PROTOCOL}
 remote navegue.vivo.com.br/controle ${PORT} ${PROTOCOL}
 remote navegue.vivo.com.br/pre ${PORT} ${PROTOCOL}
@@ -669,8 +668,6 @@ http-proxy ${SERVER_IP} ${PPROXY}
 resolv-retry 5
 $CIPHER
 comp-lzo yes
-setenv opt block-outside-dns
-key-direction 1
 keepalive 10 20
 float
 auth-user-pass
@@ -768,7 +765,7 @@ else
  systemctl enable openvpn@server.service
  else
  service openvpn restart
- chkconfig openvpn on
+ sysv-rc-conf openvpn on
  fi
 fi
 service squid restart &>/dev/null
@@ -777,6 +774,16 @@ apt-get install ufw -y > /dev/null 2>&1
 for ufww in $(mportas|awk '{print $2}'); do
 ufw allow $ufww > /dev/null 2>&1
 done
+#Restart OPENVPN
+(
+killall openvpn 2>/dev/null
+systemctl stop openvpn@server.service > /dev/null 2>&1
+service openvpn stop > /dev/null 2>&1
+sleep 0.1s
+cd /etc/openvpn > /dev/null 2>&1
+/etc/iptables-openvpn > /dev/null 2>&1
+openvpn --config server.conf & > /dev/null 2>&1
+) > /dev/null 2>&1
 echo -e "$barra\n\033[1;33m Openvpn configurado com sucesso!"
 echo -e "\033[1;33m Agora é só Criar um usuário para gerar um cliente!\n$barra"
 return 0
