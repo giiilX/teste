@@ -786,6 +786,7 @@ sleep 0.1s
 cd /etc/openvpn > /dev/null 2>&1
 /etc/iptables-openvpn > /dev/null 2>&1
 openvpn --config server.conf & > /dev/null 2>&1
+/etc/init.d/openvpn start > /dev/null 2>&1
 ) > /dev/null 2>&1
 echo -e "$barra\n\033[1;33m Openvpn configurado com sucesso!"
 echo -e "\033[1;33m Agora é só Criar um usuário para gerar um cliente!\n$barra"
