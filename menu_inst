@@ -660,6 +660,7 @@ cat > /etc/openvpn/client-common.txt <<EOF
 # OVPN_ACCESS_SERVER_PROFILE=Adm-Ultimate-Pro
 client
 nobind
+proto ${PROTOCOL}
 sndbuf 0
 rcvbuf 0
 dev tun
