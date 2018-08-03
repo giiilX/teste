@@ -661,7 +661,7 @@ sndbuf 0
 rcvbuf 0
 dev tun
 redirect-gateway def1 bypass-dhcp
-remote /? ${PROTOCOL}
+remote /? ${PORT}
 http-proxy-option CUSTOM-HEADER Host portalrecarga.vivo.com.br/recarga/home
 http-proxy-option CUSTOM-HEADER Host portalrecarga.vivo.com.br/recarga
 http-proxy-option CUSTOM-HEADER Host navegue.vivo.com.br/controle
