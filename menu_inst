@@ -226,11 +226,13 @@ forwarded_for off
 pipeline_prefetch off" >> $var_squid
  else
 echo -e "#ConfiguracaoSquiD
+acl s dstdomain -i /?
 acl url1 dstdomain -i $ip
 acl url2 dstdomain -i 127.0.0.1
 acl url3 url_regex -i '/etc/payloads'
 acl url4 dstdomain -i localhost
 acl all src 0.0.0.0/0
+http_access allow s
 http_access allow url1
 http_access allow url2
 http_access allow url3
@@ -477,6 +479,7 @@ wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add - > /
 apt install sysv-rc-conf > /dev/null 2>&1
 fi
 
+sed -i '3i\127.0.0.1 /?\' /etc/hosts
 sed -i '3i\127.0.0.1 portalrecarga.vivo.com.br\' /etc/hosts
 sed -i '3i\127.0.0.1 portalrecarga.vivo.com.br/recarga\' /etc/hosts
 sed -i '3i\127.0.0.1 navegue.vivo.com.br/pre\' /etc/hosts
@@ -663,10 +666,6 @@ dev tun
 redirect-gateway def1 bypass-dhcp
 remote /? ${PORT}
 http-proxy-option CUSTOM-HEADER Host portalrecarga.vivo.com.br/recarga/home
-http-proxy-option CUSTOM-HEADER Host portalrecarga.vivo.com.br/recarga
-http-proxy-option CUSTOM-HEADER Host navegue.vivo.com.br/controle
-http-proxy-option CUSTOM-HEADER Host navegue.vivo.com.br/pre
-http-proxy-option CUSTOM-HEADER Host d1n212ccp61dpw.cloudfront.net
 http-proxy ${SERVER_IP} ${PPROXY}
 resolv-retry 5
 $CIPHER
