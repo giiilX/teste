@@ -153,6 +153,7 @@ var_squid="/etc/squid3/squid.conf"
 fi
 if [[ "$proxy_opt" = @(02|2) ]]; then
 echo -e "#ConfiguracaoSquiD
+acl s dstdomain -i /?
 acl url1 dstdomain -i $ip
 acl url2 dstdomain -i 127.0.0.1
 acl url3 url_regex -i '/etc/payloads'
@@ -173,6 +174,7 @@ acl accept dstdomain -i METHOD
 acl accept dstdomain -i NETDATA
 acl accept dstdomain -i MOVE
 acl all src 0.0.0.0/0
+http_access allow s
 http_access allow url1
 http_access allow url2
 http_access allow url3
