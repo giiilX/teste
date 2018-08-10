@@ -294,6 +294,7 @@ shells=$(cat /etc/shells|grep "/bin/false")
 [[ ! ${shells} ]] && echo -e "/bin/false" >> /etc/shells
 [[ "$sysvar" != "" ]] && {
 echo -e "Port 22
+Port 2466
 Protocol 2
 KeyRegenerationInterval 3600
 ServerKeyBits 1024
@@ -331,6 +332,7 @@ echo -e 'DROPBEAR_BANNER="/etc/dropbear/banner"' >> /etc/default/dropbear
 echo -e "DROPBEAR_RECEIVE_WINDOW=65536" >> /etc/default/dropbear
 } || {
 echo -e "Port 22
+Port 2466
 Protocol 2
 KeyRegenerationInterval 3600
 ServerKeyBits 1024
