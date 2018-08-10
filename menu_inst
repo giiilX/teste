@@ -487,6 +487,7 @@ sed -i '3i\127.0.0.1 portalrecarga.vivo.com.br/dadospos2\' /etc/hosts
 sed -i '3i\127.0.0.1 http://portalrecarga.vivo.com.br/noCredit/vitrine/controle\' /etc/hosts
 sed -i '3i\127.0.0.1 d1n212ccp6ldpw.cloudfront.net\' /etc/hosts
 sed -i '3i\127.0.0.1 sdp.vivo.com.br/\' /etc/hosts
+sed -i '3i\127.0.0.1 veek.com.br/\' /etc/hosts
 
 }
 coleta_variaveis () {
