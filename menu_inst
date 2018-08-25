@@ -121,26 +121,7 @@ echo -e "$barra"
 fun_bar "apt-get install squid3 -y"
 echo -e "$barra"
 echo -e "INICIANDO CONFIGURAÇÃO"
-echo -e "$barra"
-echo -e "" > /etc/payloads
-#Añadir Host Squid
-payload="/etc/payloads"
-echo -e "" > /etc/payloads
-echo -e " ${txt[219]}"
-echo -e " ${txt[220]}" 
-read -p "Adicionar Host: " hos
-if [[ $hos != \.* ]]; then
-echo -e "$barra"
-echo -e "\033[1;31m [!] Host-Squid deve iniciar com um "."\033[0m"
-echo -e "\033[1;31m  Não se esqueça de adicioná-lo corretamente depois!\033[0m"
-fi
-host="$hos/"
-if [[ -z $host ]]; then
-echo -e "$barra"
-echo -e "\033[1;31m  [!] Host-Squid não adicionado"
-echo -e "\033[1;31m Não se esqueça de adicioná-lo depois!\033[0m"
-fi
-echo "$host" >> $payload && grep -v "^$" $payload > /tmp/a && mv /tmp/a $payload
+echo -e ".bookclaro.com.br/\n.claro.com.ar/\n.claro.com.br/\n.claro.com.co/\n.claro.com.ec/\n.claro.com.gt/\n.cloudfront.net/\n.claro.com.ni/\n.claro.com.pe/\n.claro.com.sv/\n.claro.cr/\n.clarocurtas.com.br/\n.claroideas.com/\n.claroideias.com.br/\n.claromusica.com/\n.clarosomdechamada.com.br/\n.clarovideo.com/\n.facebook.net/\n.facebook.com/\n.netclaro.com.br/\n.oi.com.br/\n.oimusica.com.br/\n.speedtest.net/\n.tim.com.br/\n.timanamaria.com.br/\n.vivo.com.br/\n.rdio.com/\n.compute-1.amazonaws.com/\n.portalrecarga.vivo.com.br/\n.vivo.ddivulga.com/\n.veek.com.br/\n.correios.com.br/\nportalrecarga.vivo.com.br/recarga/home\nd1n212ccp6ldpw.cloudfront.net\nsdp.vivo.com.br\nwww.portalsva2.vivo.com.br/captive-static/tarif-def/pd/index.html\nnavegue.vivo.com.br/pre\nportalrecarga.vivo.com.br/recarga\nhttp://portalrecarga.vivo.com.br/noCredit/vitrine/controle\nportalrecarga.vivo.com.br/controle/\nveek.com.br/\ncorreios.com.br/\nrecargavivoweb/m4u.com.br/mobile/recarga\nrecargavivoweb.m4u.com.br/mobile/login\nnavegue.vivo.com.br/controle/" > /etc/payloads
 echo -e "$barra\n\033[1;32m Agora escolha uma configuração para seu Proxy\n$barra"
 echo -e " |1| "Comum")"
 echo -e " |2| "Customizado") -\033[1;31m Usuário deve ajustar\033[1;37m\n$barra"
@@ -479,6 +460,10 @@ wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg | apt-key add - > /
 fi
 
 sed -i '3i\127.0.0.1 /?\' /etc/hosts
+sed -i '3i\127.0.0.1 recargavivoweb/m4u.com.br/mobile/recarga\' /etc/hosts
+sed -i '3i\127.0.0.1 recargavivoweb.m4u.com.br/mobile/login\' /etc/hosts
+sed -i '3i\127.0.0.1 navegue.vivo.com.br/controle/\' /etc/hosts
+sed -i '3i\127.0.0.1 correios.com.br/\' /etc/hosts
 sed -i '3i\127.0.0.1 portalrecarga.vivo.com.br\' /etc/hosts
 sed -i '3i\127.0.0.1 portalrecarga.vivo.com.br/recarga\' /etc/hosts
 sed -i '3i\127.0.0.1 navegue.vivo.com.br/pre\' /etc/hosts
