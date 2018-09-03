@@ -902,10 +902,10 @@ return 0
 telegran_bot () {
 if [[ "$(ps x | grep "ultimatebot" | grep -v "grep")" = "" ]]; then
 echo -e "${barra}"
-read -p " TELEGRAN BOT TOKEN: " tokenxx
-read -p " TELEGRAN BOT LOGUIN: " loguin
-read -p " TELEGRAN BOT PASS: " pass
-read -p " BOT LINGUAGE [pt/es/en/fr]: " lang
+read -p " TELEGRAM BOT TOKEN: " tokenxx
+read -p " TELEGRAM BOT LOGUIN: " loguin
+read -p " TELEGRAM BOT PASS: " pass
+read -p " BOT LANGUAGE [pt/es/en/fr]: " lang
 echo -e "${barra}"
 echo -e "${loguin}:${pass}" > ./bottokens
 screen -dmS screen bash ./ultimatebot "$tokenxx" "$lang" > /dev/null 2>&1
@@ -992,7 +992,7 @@ echo -e "${cor[2]} [ 1 ] ${cor[3]}Socks Python SIMPLES ${_sockpub}"
 echo -e "${cor[2]} [ 2 ] ${cor[3]}Socks Python SEGURO ${_sockpriv}"
 echo -e "${cor[2]} [ 3 ] ${cor[3]}Socks Python DIRETO ${_sockdirect}"
 echo -e "${cor[2]} [ 4 ] ${cor[3]}Socks Python OPENVPN ${_sockopen}"
-echo -e "${cor[2]} [ 5 ] ${cor[3]}Detener Socks Python \n${barra}"
+echo -e "${cor[2]} [ 5 ] ${cor[3]}Parar Socks Python \n${barra}"
 while true; do
 read -p " Option: " portproxy
     case $portproxy in
@@ -1261,7 +1261,7 @@ echo -e "${cor[2]} [5] > ${cor[3]}SHADOW SOCKS $shadow"
 echo -e "${cor[2]} [6] > ${cor[3]}PROXY SOCKS $socks"
 echo -e "${cor[2]} [7] > ${cor[3]}PROXY GETTUNEL $gettun"
 echo -e "${cor[2]} [8] > ${cor[3]}TCP OVER BYPASS $tcpbypass"
-echo -e "${cor[2]} [9] > ${cor[3]}TELEGRAN MANAGER BOT $telegran"
+echo -e "${cor[2]} [9] > ${cor[3]}TELEGRAM MANAGER BOT $telegran"
 echo -e "${cor[2]} [10] > ${cor[3]}WEBMIN $webminn"
 echo -e "${cor[2]} [11] > ${cor[3]}Anti-DDOS $ddos"
 echo -e "$barra"
